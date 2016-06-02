@@ -7,7 +7,7 @@ class Article < ActiveRecord::Base
                   :against => [:title, :content],
                   :using => {
                       tsearch: {
-                          dictionary: 'testzhcfg'
+                          dictionary: 'zhcnsearch'
                       }
                   }
 
