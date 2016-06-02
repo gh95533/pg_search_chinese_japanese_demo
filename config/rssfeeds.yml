@@ -1,0 +1,13 @@
+default: &default
+  rss_sample_cn: http://www.prnasia.com/p/tag-n-1-1.rss
+  rss_sample_en: http://en.prnasia.com/p/tag-n-1-0.rss
+  rss_sample_ja: http://newsrelease.blog.jp/index.rdf
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+
+    <%= form_tag articles_path, :method => 'get', :class => "form-inline" do %>
+        <p>
+          <%= text_field_tag :content_include, params[:content_include], :placeholder => "Keywords", class: "form-control" %>
+          <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
+          <%= link_to "Reset", articles_path, class: "btn btn-info" %>
+        </p>
+    <% end %>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th colspan="2">
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <% @articles.each do |article| %>
+          <tr>
+            <td><%= link_to article.title, article %></td>
+            <td><%= link_to 'Edit', edit_article_path(article), :class => "btn btn-sm" %></td>
+            <td><%= link_to 'Destroy', article, method: :delete, data: {confirm: 'Are you sure?'}, :class => "btn btn-sm" %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="text-center">
+      <%= paginate @articles %>
+    </div>
+
+    <%= link_to(new_article_path, class: "btn btn-sm btn-success") do %>
+        <i class="glyphicon glyphicon-edit">New</i></a>
+    <% end %>
+  </div>
+</div>
