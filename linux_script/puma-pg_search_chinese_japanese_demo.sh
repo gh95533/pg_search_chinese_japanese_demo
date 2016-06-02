@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# puma-fulltextsearch_cj
+# puma-pg_search_chinese_japanese_demo
 
 # chkconfig: 2345 82 55
 # processname: puma-pg_search_chinese_japanese_demo
@@ -10,10 +10,11 @@
 . /etc/rc.d/init.d/functions
 
 # The name of the service
-NAME=puma-pg_search_chinese_japanese_demo
+NAME=pg_search_chinese_japanese_demo
 
 # The username and path to the myapp source
 USER=deploy
+HOME=/home/deploy
 APP_PATH=/home/deploy/pg_search_chinese_japanese_demo
 
 # The PID and LOCK files used by puma and sidekiq
@@ -25,11 +26,9 @@ OPTS="-C $APP_PATH/config/puma.rb"
 
 # Ruby related path update
 if [ -d "$HOME/.rbenv/bin" ]; then
-  PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
-  eval "$(rbenv init -)"
+  RUBY_PATH_PATCH="PATH=$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
 elif [ -d "/usr/local/rbenv/bin" ]; then
-  PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH"
-  eval "$(rbenv init -)"
+  RUBY_PATH_PATCH="PATH=/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH"
 fi
 
 BUNDLE_CMD=bundle
@@ -40,7 +39,7 @@ start() {
 
   # Start puma
   echo -n $"Starting $NAME: "
-  daemon --pidfile=$UPID --user=$USER "$BUNDLE_CMD exec $PUMA_CMD $OPTS"
+  daemon --pidfile=$UPID --user=$USER "$RUBY_PATH_PATCH $BUNDLE_CMD exec $PUMA_CMD $OPTS"
   puma=$?
   #[ $puma -eq 0 ] && touch $ULOCK
   echo
