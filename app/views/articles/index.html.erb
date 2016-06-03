@@ -3,6 +3,7 @@
 
     <%= form_tag articles_path, :method => 'get', :class => "form-inline" do %>
         <p>
+          <%= select_tag :dictionary, options_for_select(@dictionaries, params[:dictionary]), :include_blank => false, :selected =>"zhcnsearch", class: "form-control" %>
           <%= text_field_tag :content_include, params[:content_include], :placeholder => "Keywords", class: "form-control" %>
           <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
           <%= link_to "Reset", articles_path, class: "btn btn-info" %>

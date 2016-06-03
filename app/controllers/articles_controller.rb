@@ -4,10 +4,26 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
+    @dictionaries = {"Chinese Dict (scws+zhparser)" => "zhcnsearch", "Japanese Dict (mecab+textsearch_ja)" => "japanese", "English Dict (Inner)"=> "english"}
+
     content_include = params[:content_include]
+    dictionary = params[:dictionary]
 
     @articles = Article.all
-    @articles = Article.chinese_search(content_include) if content_include.present?
+
+    if dictionary.present? && content_include.present?
+      if dictionary == 'zhcnsearch'
+        @articles = Article.chinese_search(content_include)
+
+      elsif dictionary == 'japanese'
+        @articles = Article.japanese_search(content_include)
+
+      else
+        @articles = Article.english_search(content_include)
+      end
+
+    end
+
     @articles = @articles.page(params[:page])
   end
 
@@ -77,7 +93,7 @@ class ArticlesController < ApplicationController
     end
 
     def filtering_params(params)
-      params.slice(:content_include)
+      params.slice(:dictionary, :content_include)
     end
 
 end
