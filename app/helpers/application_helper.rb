@@ -14,6 +14,7 @@ module ApplicationHelper
     end
 
     return ''
+
   end
 
   def menubar_list_items
